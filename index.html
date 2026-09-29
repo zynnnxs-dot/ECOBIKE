@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ECObike – Pesan Sepeda Listrik</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef6f2;--card:#fff;--ink:#12312b;--mute:#5d7a72;--line:#d3e3dc;--pri:#1f8a5b;--pri-ink:#fff;--acc:#f5b82e;--sel:#e2f4ea;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1d19;--card:#162925;--ink:#e6f3ee;--mute:#93b0a6;--line:#27403a;--pri:#3cc184;--pri-ink:#07231a;--sel:#1c3a31}}
+:root[data-theme="dark"]{--bg:#0e1d19;--card:#162925;--ink:#e6f3ee;--mute:#93b0a6;--line:#27403a;--pri:#3cc184;--pri-ink:#07231a;--sel:#1c3a31}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Plus Jakarta Sans',system-ui,sans-serif;line-height:1.5}
+header{padding:28px 20px 8px;max-width:1000px;margin:auto}
+h1{font-size:clamp(30px,6vw,52px);line-height:1.05;margin:0 0 8px;font-weight:800;letter-spacing:-.03em}
+h1 span{background:var(--acc);color:#12312b;padding:0 .18em;border-radius:8px}
+header p{margin:0;color:var(--mute);max-width:52ch}
+main{max-width:1000px;margin:auto;padding:16px 20px 40px;display:grid;gap:20px;grid-template-columns:1fr}
+@media(min-width:860px){main{grid-template-columns:1fr 320px;align-items:start}aside{position:sticky;top:16px}}
+section,aside .box{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:16px}
+aside .box{margin:0}
+h2{font-size:18px;margin:0 0 12px;font-weight:800}
+.grid{display:grid;gap:10px}
+.opt{display:block;width:100%;text-align:left;font:inherit;color:inherit;background:transparent;border:2px solid var(--line);border-radius:14px;padding:12px 14px;cursor:pointer}
+.opt:hover{border-color:var(--pri)}
+.opt[aria-pressed="true"]{border-color:var(--pri);background:var(--sel)}
+.opt b{display:block}.opt small{color:var(--mute)}
+.row{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:inherit;color:inherit;background:transparent;border:2px solid var(--line);border-radius:999px;padding:8px 16px;cursor:pointer;font-weight:600}
+.chip[aria-pressed="true"]{background:var(--pri);border-color:var(--pri);color:var(--pri-ink)}
+label{display:block;font-weight:600;font-size:14px;margin:12px 0 6px}
+input{font:inherit;color:inherit;background:var(--bg);border:2px solid var(--line);border-radius:12px;padding:10px 12px;width:100%}
+input:focus-visible,button:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sum dl{margin:0}.sum .row{padding:6px 0;border-bottom:1px dashed var(--line);font-size:14px}
+.sum dt{color:var(--mute)}.sum dd{margin:0;font-weight:600;text-align:right}
+.total{font-size:26px;font-weight:800;margin:14px 0 4px}
+.btn{font:inherit;font-weight:800;width:100%;border:0;border-radius:14px;padding:14px;background:var(--pri);color:var(--pri-ink);cursor:pointer;margin-top:10px}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.err{color:#d9534f;font-size:13px;min-height:18px;margin:6px 0 0}
+.ok{color:var(--pri);font-size:13px}
+.ticket{max-width:460px;margin:24px auto;background:var(--card);border:1px solid var(--line);border-radius:22px;overflow:hidden}
+.ticket .top{background:var(--pri);color:var(--pri-ink);padding:22px}
+.ticket .top h2{font-size:24px;margin:0}
+.ticket .body{padding:22px}
+.code{font-size:30px;font-weight:800;letter-spacing:.08em}
+.qr{background:#fff;padding:14px;border-radius:14px;width:fit-content;margin:16px auto 6px;line-height:0}.qr img,.qr canvas{display:block}
+.bars{height:60px;margin:16px 0 4px;border-radius:6px;background:repeating-linear-gradient(90deg,var(--ink) 0 2px,transparent 2px 5px,var(--ink) 5px 6px,transparent 6px 10px,var(--ink) 10px 13px,transparent 13px 15px)}
+.hide{display:none!important}
+.note{font-size:12px;color:var(--mute);text-align:center;margin:8px 0 0}
+</style>
+</head>
+<body>
+<div id="app">
+<header>
+  <h1>Gowes tanpa capek, pakai <span>ECObike</span></h1>
+  <p>Sepeda listrik sewa per jam. Ambil di depot Bintaro Jaya, pilih sepeda dan waktu, lalu tiketmu langsung jadi. (Simulasi, tidak ada pembayaran sungguhan.)</p>
+</header>
+<main id="form">
+  <div>
+    <section><h2>Lokasi pengambilan</h2><div class="opt" style="cursor:default;border-color:var(--pri);background:var(--sel)"><b>ECObike Depot Bintaro Jaya</b><small>Jl. Boulevard Bintaro Jaya, Sektor 7, Tangerang Selatan. Buka setiap hari 06.00–21.00. Sepeda dikembalikan ke depot yang sama.</small></div></section>
+    <section><h2>Pilih sepedamu</h2><div class="grid" id="bikes"><button type="button" class="opt" data-id="city" data-p="12000" aria-pressed="false"><span class="row"><b>ECO City</b><b>Rp12.000/jam</b></span><small>Ringan dan lincah untuk keliling kompleks, jarak tempuh 60 km</small></button><button type="button" class="opt" data-id="lipat" data-p="15000" aria-pressed="false"><span class="row"><b>ECO Fold</b><b>Rp15.000/jam</b></span><small>Bisa dilipat, muat di bagasi mobil, jarak tempuh 50 km</small></button><button type="button" class="opt" data-id="trail" data-p="20000" aria-pressed="false"><span class="row"><b>ECO Trail</b><b>Rp20.000/jam</b></span><small>Ban lebar, kuat menanjak, jarak tempuh 80 km</small></button><button type="button" class="opt" data-id="cargo" data-p="25000" aria-pressed="false"><span class="row"><b>ECO Cargo</b><b>Rp25.000/jam</b></span><small>Ada keranjang besar untuk belanja atau anak kecil, 70 km</small></button></div></section>
+    <section>
+      <h2>Kapan dan berapa lama?</h2>
+      <div class="two">
+        <div><label for="date" style="margin-top:0">Tanggal</label><input type="date" id="date"></div>
+        <div><label for="time" style="margin-top:0">Jam ambil</label><input type="time" id="time" value="08:00"></div>
+      </div>
+      <label>Durasi</label><div class="chips" id="dur"></div>
+    </section>
+    <section>
+      <h2>Data pemesan</h2>
+      <label for="name" style="margin-top:0">Nama lengkap</label><input id="name" autocomplete="name" placeholder="Contoh: Rina Kartika">
+      <label for="wa">Nomor WhatsApp</label><input id="wa" inputmode="tel" autocomplete="tel" placeholder="08xxxxxxxxxx">
+      <label for="promo">Kode promo (coba: HEMAT10)</label>
+      <div class="two" style="grid-template-columns:1fr auto"><input id="promo" placeholder="Opsional"><button class="chip" id="applyPromo" type="button">Pakai</button></div>
+      <div id="promoMsg" class="err"></div>
+      <label>Metode bayar</label><div class="chips" id="pay"></div>
+    </section>
+  </div>
+  <aside><div class="box sum">
+    <h2>Ringkasan pesanan</h2>
+    <dl id="sum"></dl>
+    <div class="total" id="total">Rp0</div>
+    <div class="err" id="err"></div>
+    <button class="btn" id="go">Pesan sekarang</button>
+    <p class="note">Baterai penuh dan helm sudah termasuk.</p>
+  </div></aside>
+</main>
+<div id="done" class="hide"></div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+
+var B=[{id:"city",n:"ECO City",p:12000},{id:"lipat",n:"ECO Fold",p:15000},{id:"trail",n:"ECO Trail",p:20000},{id:"cargo",n:"ECO Cargo",p:25000}];
+var D=[{l:"1 jam",h:1},{l:"2 jam",h:2},{l:"4 jam",h:4},{l:"Seharian (8 jam)",h:8}];
+var P=["QRIS","Transfer Virtual Account","Bayar di lokasi"];
+var S=[{id:"bj",n:"ECObike Depot Bintaro Jaya"}];var st={s:"bj",b:null,h:null,pay:null,disc:0};
+var $=function(i){return document.getElementById(i)};
+var rp=function(n){return "Rp"+Math.round(n).toLocaleString("id-ID")};
+function cost(){var b=B.find(function(x){return x.id===st.b});if(!b||!st.h)return{sub:0,off:0,tot:0};
+var sub=b.p*st.h,day=st.h>=8?sub*.15:0,base=sub-day,off=base*st.disc;return{sub:sub,day:day,off:off,tot:base-off}}
+function pick(list,box,key,tpl){box.innerHTML="";list.forEach(function(x){var e=document.createElement("button");e.type="button";e.className=tpl?"opt":"chip";e.setAttribute("aria-pressed",String(st[key]===(x.id||x.h||x)));
+e.innerHTML=tpl?tpl(x):(x.l||x);e.onclick=function(){st[key]=x.id||x.h||x;render()};box.appendChild(e)})}
+function render(){
+document.querySelectorAll("#bikes .opt").forEach(function(e){e.setAttribute("aria-pressed",String(st.b===e.dataset.id));e.onclick=function(){st.b=e.dataset.id;render()}});
+pick(D,$("dur"),"h");pick(P,$("pay"),"pay");
+var s=S.find(function(x){return x.id===st.s}),b=B.find(function(x){return x.id===st.b}),c=cost();
+var rows=[["Depot","Bintaro Jaya"],["Sepeda",b?b.n:"-"],["Durasi",st.h?st.h+" jam":"-"],["Harga sewa",c.sub?rp(c.sub):"-"]];
+if(c.day)rows.push(["Diskon seharian 15%","-"+rp(c.day)]);if(c.off)rows.push(["Promo","-"+rp(c.off)]);
+$("sum").innerHTML=rows.map(function(r){return'<div class="row"><dt>'+r[0]+"</dt><dd>"+r[1]+"</dd></div>"}).join("");
+$("total").textContent=rp(c.tot)}
+$("applyPromo").onclick=function(){var v=$("promo").value.trim().toUpperCase(),m=$("promoMsg");
+if(!v){st.disc=0;m.textContent="";}else if(v==="HEMAT10"){st.disc=.1;m.className="ok";m.textContent="Promo dipakai: diskon 10%."}else{st.disc=0;m.className="err";m.textContent="Kode promo tidak dikenali."}render()};
+var t=new Date();$("date").min=$("date").value=t.getFullYear()+"-"+String(t.getMonth()+1).padStart(2,"0")+"-"+String(t.getDate()).padStart(2,"0");
+$("go").onclick=function(){var e="",n=$("name").value.trim(),w=$("wa").value.replace(/\D/g,"");
+if(!st.b)e="Pilih sepeda dulu.";else if(!st.h)e="Pilih durasi sewa.";else if(!$("date").value)e="Isi tanggal ambil.";
+else if(n.length<3)e="Isi nama lengkap.";else if(w.length<9||w.length>14)e="Nomor WhatsApp belum valid.";else if(!st.pay)e="Pilih metode bayar.";
+$("err").textContent=e;if(e)return;
+var btn=$("go");btn.disabled=true;btn.textContent="Memproses pembayaran...";
+setTimeout(function(){ticket(n)},1400)};
+function ticket(n){var s=S.find(function(x){return x.id===st.s}),b=B.find(function(x){return x.id===st.b}),c=cost();
+var code="ECO-"+Math.random().toString(36).slice(2,6).toUpperCase()+"-"+Math.floor(100+Math.random()*900);
+var d=new Date($("date").value+"T"+($("time").value||"08:00"));
+var when=d.toLocaleDateString("id-ID",{weekday:"long",day:"numeric",month:"long",year:"numeric"})+", "+($("time").value||"08:00");
+var lunas=st.pay==="Bayar di lokasi"?"Bayar saat ambil sepeda":"Lunas via "+st.pay;
+$("form").classList.add("hide");document.querySelector("header").classList.add("hide");var o=$("done");o.classList.remove("hide");
+o.innerHTML='<div class="ticket"><div class="top"><h2>Pesanan berhasil</h2><div>Halo '+esc(n)+', sepedamu sudah kami siapkan.</div></div><div class="body">'
++'<div style="color:var(--mute);font-size:13px">Kode booking</div><div class="code">'+code+'</div><div class="qr" id="qr" aria-label="QR code booking"></div><div class="note">Scan QR ini atau tunjukkan kode ke petugas depot</div>'
++'<dl class="sum" style="margin-top:16px">'+[["Depot",s.n],["Sepeda",b.n],["Ambil",when],["Durasi",st.h+" jam"],["Total",rp(c.tot)],["Status",lunas]].map(function(r){return'<div class="row"><dt>'+r[0]+"</dt><dd>"+r[1]+"</dd></div>"}).join("")+'</dl>'
++'<button class="btn" onclick="location.reload()">Pesan lagi</button></div></div>';try{new QRCode($("qr"),{text:["ECOBIKE",code,s.n,b.n,when,st.h+" jam",rp(c.tot)].join("|"),width:176,height:176,colorDark:"#000000",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M})}catch(x){$("qr").style.display="none"}
+window.scrollTo(0,0)}
+function esc(s){var d=document.createElement("div");d.textContent=s;return d.innerHTML}
+render();
+</script>
+</body>
+</html>
